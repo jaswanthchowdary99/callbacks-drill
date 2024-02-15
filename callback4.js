@@ -4,29 +4,45 @@ const problem3 = require('../asynchronousDrill2/callback3');
 
 
 function getAllInformation (){
-
-    problem1.boardFile('mcu453ed',(boardFile) =>{
-            console.log(boardFile);
-        
-        problem2.findList('mcu453ed',(error,findList) => {
-            if(error){
-                console.log('not found');
-            }
-            else{
-                console.log(findList);
-            }
-            problem3.cardsData('ghnb768',(error,cardsInfo)=>{
-                if(error){
-                    console.log('not found')
-                }
-                else{
-                    console.log(cardsInfo)
-                }
+            const promise1 = new Promise((resolve,reject)=>{
+                problem1.getBoards('mcu453ed',(findBoard)=>{
+                    if(findBoard){     
+                        resolve(findBoard);
+                    }
+                    else{
+                        reject('data not found');
+                    }
+                })
             })
-           
-        })
 
-    });
-}
+            const promise2 = new Promise((resolve,reject)=>{
+                problem2.getList('mcu453ed',(error,findList1)=>{
+                    if(error){
+                        reject('data not found');
+                    }
+                    else{
+                        resolve(findList1);
+                    }
+                })
+            })
+            const promise3 = new Promise((resolve,reject) =>{
+                problem3.getCards('ghnb768',(error,findCard)=>{
+                    if(error){
+                         reject('data not found');
+                    }
+                    else{
+                        resolve(findCard)
+                    }
+                })
+            })
+            return Promise.all([promise1,promise2,promise3]).then(([getBoards,getList,getCards])=>{
+                console.log(getBoards);
+                console.log(getList);
+                console.log(getCards);
+     }).catch((error)=>{
+         console.log(error);
+     })
+        }
 
-module.exports ={getAllInformation}; 
+
+module.exports = {getAllInformation};

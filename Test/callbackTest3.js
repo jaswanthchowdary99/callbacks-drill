@@ -1,5 +1,7 @@
-const cardsmodule = require('../callback3.js');
-const Id3 = 'ghnb768';
-const { cardsData, requireCards } = cardsmodule;
+const { getCards } = require('../callback3.js');
 
-cardsData(Id3, requireCards);
+const Id3 = 'ghnb768';
+getCards(Id3);
+
+
+

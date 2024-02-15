@@ -1,26 +1,28 @@
 const lists = require('./lists_1.json');
 
-
-    function findList(boardId,callback){
-        const timeout = 2000;
-  setTimeout(()=>{
-     
-           const lists1 = lists[boardId] || [];
-
-           callback(null,lists1)
-        },timeout)
-    }
-
-    
-    function findListInfo (error,lists1){
-        if(error){
-            console.log('list not found');
+function getList(boardId){
+  function findList(boardId){
+    return new Promise((resolve,reject) =>{
+      setTimeout(()=>{
+        const lists1 = lists[boardId] || [];
+        if(lists1){
+          resolve(lists1);
         }
         else{
-            console.log(lists1);
+          reject('board not found')
         }
-    }
+     },Math.random()* 2000 + 1000)
+    })
+  }
 
-    // findList(Id2,findListInfo);
+  
 
-    module.exports= {findList,findListInfo}
+  findList(boardId).then((result) =>{
+      console.log(result);
+  }).catch((error)=>{
+      console.log(error)
+  })
+  
+}
+    
+module.exports = {getList}

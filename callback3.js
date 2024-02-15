@@ -1,24 +1,28 @@
 const cards = require('./cards_1.json');
 
-function cardsData (listId, callback){
 
-    const timeout = 2000;
-    setTimeout(()=>{
-        const cards1 = cards[listId] || [];
-        
-        callback(null, cards1)
-    },timeout);
+function getCards(listId){
+    function cardsData (listId){
+        return new Promise((resolve,reject)=>{
+           setTimeout(()=>{
+               const cards1 = cards[listId] || [];
+               if(cards1){
+                   resolve(cards1);
+               }
+               else{
+                   reject('data not found');
+               } 
+           },Math.random()* 2000 + 1000);
+        })
+       }
+       
+       
+       cardsData(listId).then((result) =>{
+           console.log(result);
+       }).catch((error)=>{
+           console.log(error)
+       })
+       
 }
 
-
-function requireCards( error,cards1){
-    if(error){
-        console.log('not found');
-    }
-    else{
-        console.log(cards1);
-    }
-}
-// cardsData(Id3,requireCards);
-
-module.exports ={cardsData,requireCards}
+module.exports = {getCards};
